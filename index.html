@@ -141,7 +141,7 @@
       </div>
 
       <div class="px-2 py-1 flex-shrink-0">
-        <div class="question-panel-new !px-4 !py-3 !m-0">
+        <div class="question-panel-new !px-4 !py-1 !m-0">
           <p class="!text-sm !mb-2">選擇正確標點符號：</p>
           <div id="question-text-p0" class="question-text !text-xl !leading-loose"></div>
         </div>
@@ -467,17 +467,15 @@ function answer(p,punct){
       setTimeout(()=>mon.classList.remove('shake'),300);
 
       showDamage(p,dmg);
-
+      
 if(bossHP[p]<=0){
   defeatedBossCount[p]++;
-  bossHP[p]=0;
-        playerState[p]='won';
-        playVictorySound();
-        showSideOverlay(p,'won');
-        document.querySelectorAll(`[data-player="${p}"] button`).forEach(b=>b.disabled=true);
-      }else{
-        assignNewQuestion(p);
-      }
+  bossHP[p]=maxBossHP;
+  playVictorySound();
+  assignNewQuestion(p);
+}else{
+  assignNewQuestion(p);
+}
 
       updateBossHP(p);
       document.getElementById(`p${p+1}-score`).textContent=scores[p]+'分';
