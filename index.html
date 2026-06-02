@@ -9,161 +9,342 @@
     *{box-sizing:border-box;touch-action:manipulation}
     html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#000}
     body{font-family:system-ui,sans-serif}
-
     .hidden{display:none!important}
-.battle-bg{
-  background-color:#07030f;
-  background-image:
-    radial-gradient(circle at 50% 35%, rgba(130,40,120,0.28), transparent 32%),
-    radial-gradient(circle at 18% 30%, rgba(255,90,40,0.18), transparent 16%),
-    radial-gradient(circle at 82% 30%, rgba(255,90,40,0.18), transparent 16%),
-    linear-gradient(180deg, rgba(20,5,35,0.95) 0%, rgba(8,2,18,0.98) 58%, rgba(3,1,10,1) 100%),
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 80px),
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 2px, transparent 2px 60px);
-  position:relative;
-}
 
-.battle-bg::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(ellipse at 50% 78%, rgba(160,50,160,0.22), transparent 38%),
-    linear-gradient(180deg, transparent 0%, transparent 62%, rgba(80,35,95,0.22) 63%, rgba(12,4,25,0.8) 100%);
-  pointer-events:none;
-}
+    .battle-bg{
+      background-color:#07030f;
+      background-image:
+        radial-gradient(circle at 50% 35%, rgba(130,40,120,0.28), transparent 32%),
+        radial-gradient(circle at 18% 30%, rgba(255,90,40,0.18), transparent 16%),
+        radial-gradient(circle at 82% 30%, rgba(255,90,40,0.18), transparent 16%),
+        linear-gradient(180deg, rgba(20,5,35,0.95) 0%, rgba(8,2,18,0.98) 58%, rgba(3,1,10,1) 100%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 80px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 2px, transparent 2px 60px);
+      position:relative;
+    }
 
-.battle-bg::after{
-  content:"";
-  position:absolute;
-  left:10%;
-  right:10%;
-  bottom:18%;
-  height:18%;
-  border-radius:50%;
-  background:radial-gradient(ellipse, rgba(180,55,170,0.28), transparent 68%);
-  filter:blur(2px);
-  pointer-events:none;
-}
+    .battle-bg::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(ellipse at 50% 78%, rgba(160,50,160,0.22), transparent 38%),
+        linear-gradient(180deg, transparent 0%, transparent 62%, rgba(80,35,95,0.22) 63%, rgba(12,4,25,0.8) 100%);
+      pointer-events:none;
+    }
 
-    .monster{font-size:clamp(70px,9vw,130px);transition:transform 0.1s;filter:drop-shadow(0 0 20px rgba(255,50,50,0.6))}
+    .battle-bg::after{
+      content:"";
+      position:absolute;
+      left:10%;
+      right:10%;
+      bottom:18%;
+      height:18%;
+      border-radius:50%;
+      background:radial-gradient(ellipse, rgba(180,55,170,0.28), transparent 68%);
+      filter:blur(2px);
+      pointer-events:none;
+    }
+
+    .monster{
+      font-size:clamp(70px,9vw,130px);
+      transition:transform 0.1s;
+      filter:drop-shadow(0 0 20px rgba(255,50,50,0.6));
+      position:relative;
+      z-index:5;
+    }
+
     .monster.shake{animation:shake 0.3s}
     .monster.entrance{animation:entrance 0.8s cubic-bezier(0.34,1.56,0.64,1)}
-    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-    .float{   animation:     float 2s infinite ease-in-out,     boss-glow 1.8s infinite alternate,     boss-breathe 2.5s infinite ease-in-out; }  @keyframes boss-glow{   from{     filter:drop-shadow(0 0 16px rgba(255,50,50,0.45));   }   to{     filter:drop-shadow(0 0 36px rgba(255,80,80,0.95));   } }  @keyframes boss-breathe{   0%,100%{     transform:scale(1);   }   50%{     transform:scale(1.06);   } }
+
+    @keyframes shake{
+      0%,100%{transform:translateX(0)}
+      25%{transform:translateX(-10px)}
+      75%{transform:translateX(10px)}
+    }
+
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+    }
+
+    .float{
+      animation:
+        float 2s infinite ease-in-out,
+        boss-glow 1.8s infinite alternate,
+        boss-breathe 2.5s infinite ease-in-out;
+    }
+
+    @keyframes boss-glow{
+      from{filter:drop-shadow(0 0 16px rgba(255,50,50,0.45))}
+      to{filter:drop-shadow(0 0 36px rgba(255,80,80,0.95))}
+    }
+
+    @keyframes boss-breathe{
+      0%,100%{transform:scale(1)}
+      50%{transform:scale(1.06)}
+    }
+
     .monster.enraged{
-  animation:
-    float 1.2s infinite ease-in-out,
-    boss-rage-glow 0.6s infinite alternate,
-    boss-rage-shake 0.25s infinite;
-}
+      animation:
+        float 1.2s infinite ease-in-out,
+        boss-rage-glow 0.6s infinite alternate,
+        boss-rage-shake 0.25s infinite;
+    }
 
-@keyframes boss-rage-glow{
-  from{
-    filter:drop-shadow(0 0 20px rgba(255,0,0,0.8)) brightness(1.2);
-  }
-  to{
-    filter:drop-shadow(0 0 55px rgba(255,80,0,1)) brightness(1.8);
-  }
-}
+    @keyframes boss-rage-glow{
+      from{filter:drop-shadow(0 0 20px rgba(255,0,0,0.8)) brightness(1.2)}
+      to{filter:drop-shadow(0 0 55px rgba(255,80,0,1)) brightness(1.8)}
+    }
 
-@keyframes boss-rage-shake{
-  0%,100%{transform:translateX(0) scale(1.05)}
-  25%{transform:translateX(-3px) scale(1.08)}
-  75%{transform:translateX(3px) scale(1.08)}
-}
-    @keyframes entrance{0%{transform:scale(0) translateY(-100px);opacity:0}100%{transform:scale(1) translateY(0);opacity:1}}
+    @keyframes boss-rage-shake{
+      0%,100%{transform:translateX(0) scale(1.05)}
+      25%{transform:translateX(-3px) scale(1.08)}
+      75%{transform:translateX(3px) scale(1.08)}
+    }
 
-    .hp-bar-outer{background:#1a1a1a;border:2px solid #fbbf24;border-radius:8px;overflow:hidden;box-shadow:0 0 10px rgba(251,191,36,0.3)}
-    .hp-bar-inner{transition:width 0.5s;height:100%;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e);border-radius:6px}
+    @keyframes entrance{
+      0%{transform:scale(0) translateY(-100px);opacity:0}
+      100%{transform:scale(1) translateY(0);opacity:1}
+    }
 
-    .player-hp-outer{background:#333;border-radius:6px;overflow:hidden;height:16px}
-    .player-hp-inner{transition:width 0.4s;height:100%;border-radius:6px}
+    .hp-bar-outer{
+      background:#1a1a1a;
+      border:2px solid #fbbf24;
+      border-radius:8px;
+      overflow:hidden;
+      box-shadow:0 0 10px rgba(251,191,36,0.3);
+    }
 
-.btn-punct{
-  min-width:60px;
-  min-height:54px;
-  font-size:2.4rem;
-  border-radius:14px;
-  font-weight:900;
-  transition:transform 0.08s, filter 0.15s, box-shadow 0.15s;
-  border:3px solid rgba(255,255,255,0.35);
-  box-shadow:
-    0 5px 0 rgba(0,0,0,0.45),
-    inset 0 2px 0 rgba(255,255,255,0.28),
-    0 0 14px rgba(255,255,255,0.12);
-  position:relative;
-  overflow:hidden;
-}
+    .hp-bar-inner{
+      transition:width 0.5s;
+      height:100%;
+      background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e);
+      border-radius:6px;
+    }
 
-.btn-punct::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(180deg,rgba(255,255,255,0.35) 0%,transparent 45%),
-    radial-gradient(circle at 50% 0%,rgba(255,255,255,0.22),transparent 55%);
-  border-radius:11px;
-  pointer-events:none;
-}
+    .player-hp-outer{
+      background:#333;
+      border-radius:6px;
+      overflow:hidden;
+      height:16px;
+    }
 
-.btn-punct:active{
-  transform:scale(0.92) translateY(4px);
-  box-shadow:
-    0 1px 0 rgba(0,0,0,0.5),
-    inset 0 2px 8px rgba(0,0,0,0.35);
-  filter:brightness(1.25);
-}
+    .player-hp-inner{
+      transition:width 0.4s;
+      height:100%;
+      border-radius:6px;
+    }
 
-.btn-punct:disabled{
-  opacity:0.35;
-  filter:grayscale(1);
-  pointer-events:none;
-}
+    .btn-punct{
+      min-width:60px;
+      min-height:54px;
+      font-size:2.4rem;
+      border-radius:14px;
+      font-weight:900;
+      transition:transform 0.08s, filter 0.15s, box-shadow 0.15s;
+      border:3px solid rgba(255,255,255,0.35);
+      box-shadow:
+        0 5px 0 rgba(0,0,0,0.45),
+        inset 0 2px 0 rgba(255,255,255,0.28),
+        0 0 14px rgba(255,255,255,0.12);
+      position:relative;
+      overflow:hidden;
+    }
 
-    .player-side{position:relative;display:flex;flex-direction:column;overflow:hidden}
-    .player-side.defeated{filter:grayscale(1) brightness(0.5);opacity:0.7}
+    .btn-punct::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg,rgba(255,255,255,0.35) 0%,transparent 45%),
+        radial-gradient(circle at 50% 0%,rgba(255,255,255,0.22),transparent 55%);
+      border-radius:11px;
+      pointer-events:none;
+    }
+
+    .btn-punct:active{
+      transform:scale(0.92) translateY(4px);
+      box-shadow:
+        0 1px 0 rgba(0,0,0,0.5),
+        inset 0 2px 8px rgba(0,0,0,0.35);
+      filter:brightness(1.25);
+    }
+
+    .btn-punct:disabled{
+      opacity:0.35;
+      filter:grayscale(1);
+      pointer-events:none;
+    }
+
+    .player-side{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+
+    .player-side.defeated{
+      filter:grayscale(1) brightness(0.5);
+      opacity:0.7;
+    }
 
     .game-over-overlay{
-      position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-      background:rgba(0,0,0,0.6);z-index:50;animation:fade-in 0.5s;
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,0.6);
+      z-index:50;
+      animation:fade-in 0.5s;
     }
-    @keyframes fade-in{from{opacity:0}to{opacity:1}}
-    .game-over-text{font-size:2rem;font-weight:900;color:#ff3333;text-shadow:0 0 15px rgba(255,50,50,0.8)}
-    .victory-text-side{font-size:2rem;font-weight:900;color:#fbbf24;text-shadow:0 0 15px rgba(251,191,36,0.8)}
 
-    @keyframes dmg-fly{0%{opacity:1;transform:translateY(0) scale(1.2)}100%{opacity:0;transform:translateY(-60px) scale(0.6)}}
-    .dmg-num{animation:dmg-fly 1s forwards;position:absolute;font-weight:900;font-size:1.5rem;color:#ff4444;text-shadow:0 0 6px #ff4444}
+    @keyframes fade-in{
+      from{opacity:0}
+      to{opacity:1}
+    }
+
+    .game-over-text{
+      font-size:2rem;
+      font-weight:900;
+      color:#ff3333;
+      text-shadow:0 0 15px rgba(255,50,50,0.8);
+    }
+
+    .victory-text-side{
+      font-size:2rem;
+      font-weight:900;
+      color:#fbbf24;
+      text-shadow:0 0 15px rgba(251,191,36,0.8);
+    }
+
+    @keyframes dmg-fly{
+      0%{opacity:1;transform:translateY(0) scale(1.2)}
+      100%{opacity:0;transform:translateY(-60px) scale(0.6)}
+    }
+
+    .dmg-num{
+      animation:dmg-fly 1s forwards;
+      position:absolute;
+      font-weight:900;
+      font-size:1.5rem;
+      color:#ff4444;
+      text-shadow:0 0 6px #ff4444;
+    }
 
     .result-overlay{
-      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-      background:rgba(0,0,0,0.85);z-index:100;animation:fade-in 0.5s;
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,0.85);
+      z-index:100;
+      animation:fade-in 0.5s;
     }
-    .result-title{font-size:3rem;font-weight:900;text-shadow:0 0 30px currentColor}
 
-    .start-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(30,10,50,0.95),rgba(10,5,25,0.95));z-index:200}
-    .start-content{text-align:center;animation:fade-in 0.8s}
-    .start-title{font-size:clamp(2rem,8vw,4.5rem);font-weight:900;color:#fbbf24;text-shadow:0 0 40px rgba(251,191,36,0.6),0 0 80px rgba(251,191,36,0.3);margin-bottom:1rem;letter-spacing:2px}
-    .start-subtitle{font-size:clamp(1rem,3vw,1.5rem);color:#c084fc;text-shadow:0 0 20px rgba(192,132,252,0.5);margin-bottom:3rem;letter-spacing:1px}
-    .start-btn{
-      padding:1rem 2.5rem;font-size:clamp(1.2rem,2vw,1.8rem);font-weight:900;color:#000;background:linear-gradient(180deg,#fef08a,#fbbf24);border:3px solid #fcd34d;border-radius:12px;cursor:pointer;transition:all 0.15s;box-shadow:0 6px 0 rgba(0,0,0,0.4),0 0 30px rgba(251,191,36,0.6);letter-spacing:1px;
+    .result-title{
+      font-size:3rem;
+      font-weight:900;
+      text-shadow:0 0 30px currentColor;
     }
-    .start-btn:active{transform:translateY(6px) scale(0.95);box-shadow:0 0 15px rgba(251,191,36,0.8)}
+
+    .start-screen{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg,rgba(30,10,50,0.95),rgba(10,5,25,0.95));
+      z-index:200;
+    }
+
+    .start-content{text-align:center;animation:fade-in 0.8s}
+
+    .start-title{
+      font-size:clamp(2rem,8vw,4.5rem);
+      font-weight:900;
+      color:#fbbf24;
+      text-shadow:0 0 40px rgba(251,191,36,0.6),0 0 80px rgba(251,191,36,0.3);
+      margin-bottom:1rem;
+      letter-spacing:2px;
+    }
+
+    .start-subtitle{
+      font-size:clamp(1rem,3vw,1.5rem);
+      color:#c084fc;
+      text-shadow:0 0 20px rgba(192,132,252,0.5);
+      margin-bottom:3rem;
+      letter-spacing:1px;
+    }
+
+    .start-btn{
+      padding:1rem 2.5rem;
+      font-size:clamp(1.2rem,2vw,1.8rem);
+      font-weight:900;
+      color:#000;
+      background:linear-gradient(180deg,#fef08a,#fbbf24);
+      border:3px solid #fcd34d;
+      border-radius:12px;
+      cursor:pointer;
+      transition:all 0.15s;
+      box-shadow:0 6px 0 rgba(0,0,0,0.4),0 0 30px rgba(251,191,36,0.6);
+      letter-spacing:1px;
+    }
+
+    .start-btn:active{
+      transform:translateY(6px) scale(0.95);
+      box-shadow:0 0 15px rgba(251,191,36,0.8);
+    }
 
     .mute-toggle,.fullscreen-toggle{
-      position:fixed;z-index:150;background:rgba(0,0,0,0.6);border:2px solid #fbbf24;border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:1.8rem;
+      position:fixed;
+      z-index:150;
+      background:rgba(0,0,0,0.6);
+      border:2px solid #fbbf24;
+      border-radius:50%;
+      width:48px;
+      height:48px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:all 0.2s;
+      font-size:1.8rem;
     }
+
     .mute-toggle{top:1rem;right:1rem}
     .fullscreen-toggle{top:1rem;right:5.5rem}
 
     .question-panel-new{
       background:linear-gradient(180deg,rgba(50,30,80,0.98),rgba(30,15,60,0.98));
-      border:4px solid #fbbf24;border-radius:8px;box-shadow:0 0 25px rgba(251,191,36,0.5);padding:1.5rem;
-      max-width:100%;margin:0;word-wrap:break-word;overflow-wrap:break-word;
+      border:4px solid #fbbf24;
+      border-radius:8px;
+      box-shadow:0 0 25px rgba(251,191,36,0.5);
+      padding:1.5rem;
+      max-width:100%;
+      margin:0;
+      word-wrap:break-word;
+      overflow-wrap:break-word;
     }
-    .question-panel-new p{color:#fbbf24;font-size:1rem;margin-bottom:0.75rem;letter-spacing:1px;font-weight:700}
-    .question-panel-new .question-text{color:#fff;font-size:1.5rem;font-weight:700;line-height:1.8;text-shadow:0 0 10px rgba(251,191,36,0.3);white-space:normal}
+
+    .question-panel-new p{
+      color:#fbbf24;
+      font-size:1rem;
+      margin-bottom:0.75rem;
+      letter-spacing:1px;
+      font-weight:700;
+    }
+
+    .question-panel-new .question-text{
+      color:#fff;
+      font-size:1.5rem;
+      font-weight:700;
+      line-height:1.8;
+      text-shadow:0 0 10px rgba(251,191,36,0.3);
+      white-space:normal;
+    }
   </style>
 </head>
 
@@ -186,7 +367,9 @@
     <div id="side-0" class="player-side flex-1 battle-bg border-r-2 border-yellow-600 flex flex-col">
       <div class="flex-1 flex flex-col items-center justify-center relative min-h-0 py-1">
         <div id="monster-0" class="monster float"></div>
-        <div class="hp-bar-outer w-2/3 h-5 mt-2"><div id="boss-hp-0" class="hp-bar-inner" style="width:100%"></div></div>
+        <div class="hp-bar-outer w-2/3 h-5 mt-2">
+          <div id="boss-hp-0" class="hp-bar-inner" style="width:100%"></div>
+        </div>
         <div id="boss-hp-text-0" class="text-lg text-yellow-300 font-bold mt-2">HP 500/500</div>
         <div id="dmg-0" class="absolute inset-0 pointer-events-none"></div>
       </div>
@@ -202,11 +385,15 @@
         <div class="flex items-center gap-1 flex-shrink-0">
           <span class="text-lg">🛡️</span><span class="font-bold text-lg text-white">騎士</span>
         </div>
-        <div class="flex-1 min-w-0"><div class="player-hp-outer w-full h-6"><div id="p1-hp" class="player-hp-inner bg-green-400" style="width:100%"></div></div></div>
+        <div class="flex-1 min-w-0">
+          <div class="player-hp-outer w-full h-6">
+            <div id="p1-hp" class="player-hp-inner bg-green-400" style="width:100%"></div>
+          </div>
+        </div>
         <span id="p1-score" class="font-bold text-yellow-300 text-xl flex-shrink-0">0分</span>
       </div>
 
-     <div class="grid grid-cols-3 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="0">
+      <div class="grid grid-cols-3 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="0">
         <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'，')">，</button>
         <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'。')">。</button>
         <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'、')">、</button>
@@ -218,15 +405,17 @@
     </div>
 
     <div id="side-1" class="player-side flex-1 battle-bg border-l-2 border-yellow-600 flex flex-col">
-      <div class="flex-1 flex flex-col items-center justify-center relative min-h-0 py-3">
+      <div class="flex-1 flex flex-col items-center justify-center relative min-h-0 py-1">
         <div id="monster-1" class="monster float"></div>
-        <div class="hp-bar-outer w-3/4 h-5 mt-1"><div id="boss-hp-1" class="hp-bar-inner" style="width:100%"></div></div>
+        <div class="hp-bar-outer w-3/4 h-5 mt-1">
+          <div id="boss-hp-1" class="hp-bar-inner" style="width:100%"></div>
+        </div>
         <div id="boss-hp-text-1" class="text-lg text-yellow-300 font-bold mt-2">HP 500/500</div>
         <div id="dmg-1" class="absolute inset-0 pointer-events-none"></div>
       </div>
 
       <div class="px-2 py-1 flex-shrink-0">
-        <div class="question-panel-new !px-4 !py-3 !m-0">
+        <div class="question-panel-new !px-4 !py-1 !m-0">
           <p class="!text-sm !mb-2">選擇正確標點符號：</p>
           <div id="question-text-p1" class="question-text !text-xl !leading-loose"></div>
         </div>
@@ -236,11 +425,15 @@
         <div class="flex items-center gap-1 flex-shrink-0">
           <span class="text-lg">🧙</span><span class="font-bold text-lg text-white">法師</span>
         </div>
-        <div class="flex-1 min-w-0"><div class="player-hp-outer w-full h-6"><div id="p2-hp" class="player-hp-inner bg-green-400" style="width:100%"></div></div></div>
+        <div class="flex-1 min-w-0">
+          <div class="player-hp-outer w-full h-6">
+            <div id="p2-hp" class="player-hp-inner bg-green-400" style="width:100%"></div>
+          </div>
+        </div>
         <span id="p2-score" class="font-bold text-yellow-300 text-xl flex-shrink-0">0分</span>
       </div>
 
-<div class="grid grid-cols-3 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="1">
+      <div class="grid grid-cols-3 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="1">
         <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'，')">，</button>
         <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'。')">。</button>
         <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'、')">、</button>
@@ -329,7 +522,8 @@ function animateBossEntrance(){
     document.getElementById('monster-1').classList.remove('entrance');
   },900);
 }
-const bossList = [
+
+const bossList=[
   "👹",
   "🧟‍♂️",
   "🦹🏻‍♀️",
@@ -342,6 +536,7 @@ const bossList = [
 function randomBoss(){
   return bossList[Math.floor(Math.random()*bossList.length)];
 }
+
 const questions=[
   {sentence:'今天下雨了___我們取消了旅行。',answer:['，']},
   {sentence:'小美喜歡唱歌___跳舞和畫畫。',answer:['、']},
@@ -382,15 +577,12 @@ const questions=[
 
 const maxBossHP=500,maxPlayerHP=100;
 const scores=[0,0],combos=[0,0],playerHP=[100,100],bossHP=[500,500];
-const correctCount=[0,0], wrongCount=[0,0], defeatedBossCount=[0,0];
+const correctCount=[0,0],wrongCount=[0,0],defeatedBossCount=[0,0];
 const currentInput=[0,0];
+const currentAnswers=[[],[]];
 const playerState=['playing','playing'];
 let currentQuestion=[null,null];
 
-function randomBoss(){
-  return bossList[Math.floor(Math.random()*bossList.length)];
-}
-  
 function getRandomQuestion(excludeQuestion=null){
   let q;
   do{
@@ -403,24 +595,45 @@ function assignNewQuestion(player){
   const otherPlayer=player===0?1:0;
   currentQuestion[player]=getRandomQuestion(currentQuestion[otherPlayer]);
   currentInput[player]=0;
+  currentAnswers[player]=[];
   renderQuestion(player);
 }
 
 function renderQuestion(player){
   const q=currentQuestion[player];
   if(!q)return;
-  let sentence=q.sentence;
-  sentence=sentence.replace(/___/g,'<span class="inline-block w-4 border-b-4 border-dashed border-yellow-400 mx-1"></span>');
+
+  let blankIndex=0;
+
+  const sentence=q.sentence.replace(/___/g,()=>{
+    const filled=currentAnswers[player][blankIndex];
+
+    if(filled){
+      blankIndex++;
+      return `<span class="inline-block px-3 mx-1 text-yellow-300 font-black border-b-4 border-yellow-400">${filled}</span>`;
+    }
+
+    const isCurrent=blankIndex===currentInput[player];
+    blankIndex++;
+
+    return `<span class="inline-block w-8 border-b-4 ${isCurrent?'border-yellow-300':'border-dashed border-yellow-400'} mx-1"></span>`;
+  });
+
   document.getElementById(`question-text-p${player}`).innerHTML=sentence;
 }
 
 function initQuestions(){
-  document.getElementById('monster-0').textContent = randomBoss();
-  document.getElementById('monster-1').textContent = randomBoss();
+  document.getElementById('monster-0').textContent=randomBoss();
+  document.getElementById('monster-1').textContent=randomBoss();
+
   currentQuestion[0]=getRandomQuestion();
   currentQuestion[1]=getRandomQuestion(currentQuestion[0]);
+
   currentInput[0]=0;
   currentInput[1]=0;
+  currentAnswers[0]=[];
+  currentAnswers[1]=[];
+
   renderQuestion(0);
   renderQuestion(1);
 }
@@ -468,42 +681,34 @@ function checkEnd(){
   const title=document.getElementById('result-title');
   const detail=document.getElementById('result-detail');
 
-  if(playerState[0]==='won'&&playerState[1]==='dead'){
-    icon.textContent='🏆';title.textContent='玩家1 勝利！';title.style.color='#fbbf24';detail.textContent=`騎士 ${scores[0]}分`;
-  }else if(playerState[1]==='won'&&playerState[0]==='dead'){
-    icon.textContent='🏆';title.textContent='玩家2 勝利！';title.style.color='#fbbf24';detail.textContent=`法師 ${scores[1]}分`;
-  }else if(playerState[0]==='won'&&playerState[1]==='won'){
-    if(scores[0]>scores[1]){
-      icon.textContent='🏆';title.textContent='玩家1 勝利！';title.style.color='#fbbf24';
-    }else if(scores[1]>scores[0]){
-      icon.textContent='🏆';title.textContent='玩家2 勝利！';title.style.color='#fbbf24';
-    }else{
-      icon.textContent='🤝';title.textContent='平手！';title.style.color='#60a5fa';
-    }
-    detail.textContent=`騎士 ${scores[0]}分 vs 法師 ${scores[1]}分`;
-  }else{
-    icon.textContent='💀';title.textContent='MISSION FAILED';title.style.color='#dc2626';detail.textContent='兩位玩家都陣亡了...';
-  }
-  detail.innerHTML = `
-  <div style="font-size:1.4rem; line-height:1.8;">
-    <p>🛡️ 騎士：${scores[0]}分｜擊敗 ${defeatedBossCount[0]} 隻Boss｜答對 ${correctCount[0]} 題｜答錯 ${wrongCount[0]} 題</p>
-    <p>🧙 法師：${scores[1]}分｜擊敗 ${defeatedBossCount[1]} 隻Boss｜答對 ${correctCount[1]} 題｜答錯 ${wrongCount[1]} 題</p>
-  </div>
-`;
+  icon.textContent='💀';
+  title.textContent='MISSION FAILED';
+  title.style.color='#dc2626';
+
+  detail.innerHTML=`
+    <div style="font-size:1.4rem; line-height:1.8;">
+      <p>🛡️ 騎士：${scores[0]}分｜擊敗 ${defeatedBossCount[0]} 隻Boss｜答對 ${correctCount[0]} 題｜答錯 ${wrongCount[0]} 題</p>
+      <p>🧙 法師：${scores[1]}分｜擊敗 ${defeatedBossCount[1]} 隻Boss｜答對 ${correctCount[1]} 題｜答錯 ${wrongCount[1]} 題</p>
+    </div>
+  `;
+
   overlay.classList.remove('hidden');
 }
 
 function showSideOverlay(p,type){
   const side=document.getElementById(`side-${p}`);
   if(side.querySelector('.game-over-overlay'))return;
+
   const ov=document.createElement('div');
   ov.className='game-over-overlay';
+
   if(type==='dead'){
     ov.innerHTML='<div class="game-over-text">GAME OVER</div>';
     side.classList.add('defeated');
   }else{
     ov.innerHTML='<div class="victory-text-side">勝利！🎉</div>';
   }
+
   side.appendChild(ov);
 }
 
@@ -520,6 +725,7 @@ function answer(p,punct){
 
     if(currentInput[p]===q.answer.length-1){
       currentInput[p]=0;
+      currentAnswers[p]=[];
       combos[p]++;
 
       let dmg=20;
@@ -529,6 +735,7 @@ function answer(p,punct){
       bossHP[p]-=dmg;
       scores[p]+=combos[p]>=3?20:10;
       correctCount[p]++;
+
       playBossHitSound();
 
       const mon=document.getElementById(`monster-${p}`);
@@ -536,27 +743,34 @@ function answer(p,punct){
       setTimeout(()=>mon.classList.remove('shake'),300);
 
       showDamage(p,dmg);
-      
-if(bossHP[p]<=0){
-  defeatedBossCount[p]++;
-  bossHP[p]=maxBossHP;
-  playVictorySound();
-  assignNewQuestion(p);
-}else{
-  assignNewQuestion(p);
-}
+
+      if(bossHP[p]<=0){
+        defeatedBossCount[p]++;
+        bossHP[p]=maxBossHP;
+        document.getElementById(`monster-${p}`).textContent=randomBoss();
+        playVictorySound();
+        assignNewQuestion(p);
+      }else{
+        assignNewQuestion(p);
+      }
 
       updateBossHP(p);
       document.getElementById(`p${p+1}-score`).textContent=scores[p]+'分';
       checkEnd();
 
     }else{
+      currentAnswers[p].push(punct);
       currentInput[p]++;
+      renderQuestion(p);
     }
 
   }else{
     playWrongSound();
+
     currentInput[p]=0;
+    currentAnswers[p]=[];
+    renderQuestion(p);
+
     combos[p]=0;
     wrongCount[p]++;
     playerHP[p]-=15;
@@ -581,11 +795,13 @@ function restartGame(){
   scores.fill(0);
   combos.fill(0);
   correctCount.fill(0);
-wrongCount.fill(0);
-defeatedBossCount.fill(0);
+  wrongCount.fill(0);
+  defeatedBossCount.fill(0);
   playerHP.fill(maxPlayerHP);
   bossHP.fill(maxBossHP);
   currentInput.fill(0);
+  currentAnswers[0]=[];
+  currentAnswers[1]=[];
   playerState[0]='playing';
   playerState[1]='playing';
 
@@ -594,9 +810,12 @@ defeatedBossCount.fill(0);
   for(let i=0;i<2;i++){
     const side=document.getElementById(`side-${i}`);
     side.classList.remove('defeated');
+
     const ov=side.querySelector('.game-over-overlay');
     if(ov)ov.remove();
+
     document.querySelectorAll(`[data-player="${i}"] button`).forEach(b=>b.disabled=false);
+
     updatePlayerHP(i);
     updateBossHP(i);
     document.getElementById(`p${i+1}-score`).textContent='0分';
@@ -614,5 +833,5 @@ function initGame(){
   updatePlayerHP(1);
 }
 </script>
+
 </body>
-</html>
