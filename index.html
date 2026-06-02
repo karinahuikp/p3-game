@@ -455,6 +455,7 @@
   </div>
 </div>
 
+<script src="questions.js"></script>
 <script>
 let soundEnabled=true;
 let audioContext=null;
@@ -536,44 +537,6 @@ const bossList=[
 function randomBoss(){
   return bossList[Math.floor(Math.random()*bossList.length)];
 }
-
-const questions=[
-  {sentence:'今天下雨了___我們取消了旅行。',answer:['，']},
-  {sentence:'小美喜歡唱歌___跳舞和畫畫。',answer:['、']},
-  {sentence:'你今天有沒有做功課___',answer:['？']},
-  {sentence:'哇___這朵花真漂亮___',answer:['！','！']},
-  {sentence:'小明心想___我一定要努力溫習。',answer:['：']},
-  {sentence:'媽媽說___「吃飯前要洗手。」',answer:['：']},
-  {sentence:'森林裏有兔子___松鼠和小鳥。',answer:['、']},
-  {sentence:'放學後___我們一起去圖書館看書。',answer:['，']},
-  {sentence:'小狗不停地叫___真吵啊___',answer:['，','！']},
-  {sentence:'你為甚麼哭___',answer:['？']},
-  {sentence:'哥哥大聲說___「我們成功了___」',answer:['：','！']},
-  {sentence:'今天是我的生日___我很開心。',answer:['，']},
-  {sentence:'小華心想___如果我努力練習，一定會進步。',answer:['：']},
-  {sentence:'教室裏十分安靜___大家都在專心考試。',answer:['，']},
-  {sentence:'太好了___我們終於完成比賽了___',answer:['！','！']},
-  {sentence:'公園裏有鞦韆___滑梯和沙池。',answer:['、']},
-  {sentence:'你知道這本書是誰的嗎___',answer:['？']},
-  {sentence:'爸爸提醒我___要準時睡覺。',answer:['：']},
-  {sentence:'小明一邊跑步___一邊唱歌。',answer:['，']},
-  {sentence:'今天的天氣真熱___',answer:['！']},
-  {sentence:'小美心想___明天一定要早起。',answer:['：']},
-  {sentence:'小鳥在天空中飛來飛去___十分自由。',answer:['，']},
-  {sentence:'你願意和我一起玩遊戲嗎___',answer:['？']},
-  {sentence:'校長宣布___「下星期舉行運動會。」',answer:['：']},
-  {sentence:'妹妹喜歡吃蘋果___香蕉和西瓜。',answer:['、']},
-  {sentence:'糟糕___我忘記帶功課了___',answer:['！','！']},
-  {sentence:'哥哥問我___「你完成溫習了嗎___」',answer:['：','？']},
-  {sentence:'放學後___同學們開心地回家。',answer:['，']},
-  {sentence:'小強心想___我要成為一位勇敢的騎士。',answer:['：']},
-  {sentence:'大家一起歡呼___我們打敗Boss了___',answer:['：','！']},
-  {sentence:'閱讀圖書能增進知識___瀏覽互聯網能獲得最新資訊。',answer:['；']},
-  {sentence:'小時候，祖父是最疼愛我的保母___我長大後，祖父是我最好的人生導師。',answer:['；']},
-  {sentence:'小時候，我在樹下玩捉迷藏___長大了，我在樹下編織夢想。',answer:['；']},
-  {sentence:'夏天來了，大家汗流浹背___冬天來了，大家冷得發抖。',answer:['；']},
-  {sentence:'有些同學喜歡閱讀小說___有些同學喜歡閱讀科學書。',answer:['；']}
-];
 
 const maxBossHP=500,maxPlayerHP=100;
 const scores=[0,0],combos=[0,0],playerHP=[100,100],bossHP=[500,500];
