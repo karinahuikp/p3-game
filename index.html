@@ -139,7 +139,8 @@
     .btn-punct{
       min-width:60px;
       min-height:54px;
-      font-size:2.4rem;
+      font-size:2rem;
+      line-height:1;
       border-radius:14px;
       font-weight:900;
       transition:transform 0.08s, filter 0.15s, box-shadow 0.15s;
@@ -393,7 +394,7 @@
         <span id="p1-score" class="font-bold text-yellow-300 text-xl flex-shrink-0">0分</span>
       </div>
 
-      <div class="grid grid-cols-4 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="0">
+      <div class="grid grid-cols-5 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="0">
         <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'，')">，</button>
         <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'。')">。</button>
         <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'、')">、</button>
@@ -402,9 +403,10 @@
         <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'？')">？</button>
         <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'！')">！</button>
         <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'「')">「</button>
-<button class="btn-punct bg-red-600 text-white" onclick="answer(0,'」')">」</button>
-<button class="btn-punct bg-red-600 text-white" onclick="answer(0,'《')">《</button>
-<button class="btn-punct bg-red-600 text-white" onclick="answer(0,'》')">》</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'」')">」</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'《')">《</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'》')">》</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'……')">……</button>
       </div>
     </div>
 
@@ -437,18 +439,19 @@
         <span id="p2-score" class="font-bold text-yellow-300 text-xl flex-shrink-0">0分</span>
       </div>
 
-<div class="grid grid-cols-4 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="1">
+<div class="grid grid-cols-5 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="1">
         <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'，')">，</button>
         <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'。')">。</button>
         <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'、')">、</button>
         <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'；')">；</button>
         <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'：')">：</button>
         <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'？')">？</button>
-        <button class="btn-punct bg-blue-600 text-white col-span-3" onclick="answer(1,'！')">！</button>
-  <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'「')">「</button>
-<button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'」')">」</button>
-<button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'《')">《</button>
-<button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'》')">》</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'！')">！</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'「')">「</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'」')">」</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'《')">《</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'》')">》</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'……')">……</button>
       </div>
     </div>
   </div>
