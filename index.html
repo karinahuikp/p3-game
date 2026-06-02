@@ -489,6 +489,7 @@ function playBossHitSound(){playTone(440,0.05,'sawtooth');playTone(660,0.1,'sawt
 function playGameOverSound(){playTone(392,0.15);playTone(329.63,0.15);playTone(246.94,0.3)}
 function playVictorySound(){playTone(523.25,0.15);playTone(659.25,0.15);playTone(783.99,0.3)}
 function playStartSound(){playTone(440,0.1);playTone(554.37,0.1);playTone(659.25,0.2)}
+function playClickSound(){playTone(320,0.05,'square',0.15);}
 
 function toggleMute(){
   soundEnabled=!soundEnabled;
@@ -676,6 +677,7 @@ function showSideOverlay(p,type){
 }
 
 function answer(p,punct){
+  playClickSound();
   if(playerState[p]!=='playing')return;
 
   const q=currentQuestion[p];
