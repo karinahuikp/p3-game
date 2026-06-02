@@ -52,7 +52,7 @@ button:active{
 <body class="p-4">
 
 <h1 class="text-4xl font-black text-yellow-300 mb-6">
-📝 標點地下城 題庫編輯器
+📝 題庫編輯器
 </h1>
 
 <div class="card mb-6">
@@ -115,7 +115,13 @@ function renderQuestions(){
 
   const list = document.getElementById("question-list");
   const count = document.getElementById("question-count");
+  const blankCount =
+  (sentence.match(/___/g) || []).length;
 
+if(blankCount !== answerArray.length){
+  alert("留空數量與答案數量不一致！");
+  return;
+}
   count.textContent = questions.length;
 
   if(questions.length === 0){
