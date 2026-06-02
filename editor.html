@@ -131,13 +131,6 @@ function renderQuestions(){
 
   const list = document.getElementById("question-list");
   const count = document.getElementById("question-count");
-  const blankCount =
-  (sentence.match(/___/g) || []).length;
-
-if(blankCount !== answerArray.length){
-  alert("留空數量與答案數量不一致！");
-  return;
-}
   count.textContent = questions.length;
 
   if(questions.length === 0){
@@ -206,7 +199,6 @@ if(blankCount !== answerArray.length){
   });
 
 }
-
 function addQuestion(){
 
   const sentence =
@@ -227,6 +219,14 @@ function addQuestion(){
     .map(a=>a.trim())
     .filter(a=>a);
 
+  const blankCount =
+    (sentence.match(/___/g) || []).length;
+
+  if(blankCount !== answerArray.length){
+    alert(`留空數量與答案數量不一致！\n留空：${blankCount} 個\n答案：${answerArray.length} 個`);
+    return;
+  }
+
   questions.push({
     sentence:sentence,
     answer:answerArray
@@ -237,7 +237,6 @@ function addQuestion(){
 
   renderQuestions();
 }
-
 function deleteQuestion(index){
 
   questions.splice(index,1);
