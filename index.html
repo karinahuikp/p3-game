@@ -362,7 +362,7 @@
 </a>
 <div id="start-screen" class="start-screen">
   <div class="start-content">
-    <div class="start-title">中文標點地下城</div>
+    <div class="start-title">標點符號打怪遊戲</div>
     <div class="start-subtitle">擊敗Boss，成為最強勇者！</div>
     <button onclick="startGame()" class="start-btn">【開始冒險】</button>
   </div>
@@ -371,6 +371,7 @@
 <main id="game-container" class="hidden flex flex-col" style="width:100%;height:92vh">
   <div class="flex flex-1 min-h-0">
 
+    <!-- 玩家1 -->
     <div id="side-0" class="player-side flex-1 battle-bg border-r-2 border-yellow-600 flex flex-col">
       <div class="flex-1 flex flex-col items-center justify-center relative min-h-0 py-1">
         <div id="monster-0" class="monster float"></div>
@@ -381,61 +382,52 @@
         <div id="dmg-0" class="absolute inset-0 pointer-events-none"></div>
       </div>
 
-<div class="px-2 py-1 flex-shrink-0">
-  <div class="question-panel-new !px-4 !py-1 !m-0">
+      <div class="px-2 py-1 flex-shrink-0">
+        <div class="question-panel-new !px-4 !py-1 !m-0">
+          <p class="!text-sm !mb-1 text-yellow-300 font-black">
+            ⚔️ 答對題目即可攻擊怪獸！
+          </p>
+          <p class="!text-xs !mb-1 text-yellow-400">
+            選擇正確標點符號
+          </p>
+          <div id="question-text-p0" class="question-text !text-xl !leading-loose"></div>
+        </div>
+      </div>
 
-    <div class="mb-2">
-      <p class="text-yellow-300 text-sm font-black tracking-wide">
-        ⚔️ 答對題目即可攻擊怪獸！
-      </p>
+      <div class="flex items-center justify-between px-3 py-1 bg-black/40 flex-shrink-0 gap-2">
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <span class="text-lg">🛡️</span>
+          <span class="font-bold text-lg text-white">騎士</span>
+        </div>
 
-      <p class="text-yellow-400 text-xs mt-1">
-        選擇正確標點符號
-      </p>
+        <span id="p1-hp-text" class="text-white font-bold text-sm whitespace-nowrap">100/100</span>
+
+        <div class="flex-1 min-w-0">
+          <div class="player-hp-outer w-full h-6">
+            <div id="p1-hp" class="player-hp-inner bg-green-400" style="width:100%"></div>
+          </div>
+        </div>
+
+        <span id="p1-score" class="font-bold text-yellow-300 text-xl flex-shrink-0">0分</span>
+      </div>
+
+      <div class="grid grid-cols-4 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="0">
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'，')">，</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'。')">。</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'、')">、</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'……')">……</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'；')">；</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'：')">：</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'？')">？</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'！')">！</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'「')">「</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'」')">」</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'《')">《</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'》')">》</button>
+      </div>
     </div>
 
-    <div id="question-text-p0"
-         class="question-text !text-xl !leading-loose">
-    </div>
-
-  </div>
-</div>
-
-<div class="flex items-center justify-between px-3 py-1 bg-black/40 flex-shrink-0 gap-2">
-  <div class="flex items-center gap-1 flex-shrink-0">
-    <span class="text-lg">🛡️</span>
-    <span class="font-bold text-lg text-white">騎士</span>
-  </div>
-
-  <span id="p1-hp-text" class="text-white font-bold text-sm whitespace-nowrap">
-    100/100
-  </span>
-
-  <div class="flex-1 min-w-0">
-    <div class="player-hp-outer w-full h-6">
-      <div id="p1-hp" class="player-hp-inner bg-green-400" style="width:100%"></div>
-    </div>
-  </div>
-
-  <span id="p1-score" class="font-bold text-yellow-300 text-xl flex-shrink-0">0分</span>
-</div>
-
-<div class="grid grid-cols-4 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="0">
-  <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'，')">，</button>
-  <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'。')">。</button>
-  <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'、')">、</button>
-  <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'……')">……</button>
-  <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'；')">；</button>
-  <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'：')">：</button>
-  <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'？')">？</button>
-  <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'！')">！</button>
-  <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'「')">「</button>
-  <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'」')">」</button>
-  <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'《')">《</button>
-  <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'》')">》</button>
-</div>
-    </div>
-
+    <!-- 玩家2 -->
     <div id="side-1" class="player-side flex-1 battle-bg border-l-2 border-yellow-600 flex flex-col">
       <div class="flex-1 flex flex-col items-center justify-center relative min-h-0 py-1">
         <div id="monster-1" class="monster float"></div>
@@ -446,60 +438,51 @@
         <div id="dmg-1" class="absolute inset-0 pointer-events-none"></div>
       </div>
 
-<div class="px-2 py-1 flex-shrink-0">
-  <div class="question-panel-new !px-4 !py-1 !m-0">
+      <div class="px-2 py-1 flex-shrink-0">
+        <div class="question-panel-new !px-4 !py-1 !m-0">
+          <p class="!text-sm !mb-1 text-yellow-300 font-black">
+            ⚔️ 答對題目即可攻擊怪獸！
+          </p>
+          <p class="!text-xs !mb-1 text-yellow-400">
+            選擇正確標點符號
+          </p>
+          <div id="question-text-p1" class="question-text !text-xl !leading-loose"></div>
+        </div>
+      </div>
 
-    <div class="mb-2">
-      <p class="text-yellow-300 text-sm font-black tracking-wide">
-        ⚔️ 答對題目即可攻擊怪獸！
-      </p>
+      <div class="flex items-center justify-between px-3 py-1 bg-black/40 flex-shrink-0 gap-2">
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <span class="text-lg">🧙</span>
+          <span class="font-bold text-lg text-white">法師</span>
+        </div>
 
-      <p class="text-yellow-400 text-xs mt-1">
-        選擇正確標點符號
-      </p>
+        <span id="p2-hp-text" class="text-white font-bold text-sm whitespace-nowrap">100/100</span>
+
+        <div class="flex-1 min-w-0">
+          <div class="player-hp-outer w-full h-6">
+            <div id="p2-hp" class="player-hp-inner bg-green-400" style="width:100%"></div>
+          </div>
+        </div>
+
+        <span id="p2-score" class="font-bold text-yellow-300 text-xl flex-shrink-0">0分</span>
+      </div>
+
+      <div class="grid grid-cols-4 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="1">
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'，')">，</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'。')">。</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'、')">、</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'……')">……</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'；')">；</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'：')">：</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'？')">？</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'！')">！</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'「')">「</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'」')">」</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'《')">《</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'》')">》</button>
+      </div>
     </div>
 
-    <div id="question-text-p1"
-         class="question-text !text-xl !leading-loose">
-    </div>
-
-  </div>
-</div>
-
-<div class="flex items-center justify-between px-3 py-1 bg-black/40 flex-shrink-0 gap-2">
-  <div class="flex items-center gap-1 flex-shrink-0">
-    <span class="text-lg">🧙</span>
-    <span class="font-bold text-lg text-white">法師</span>
-  </div>
-
-  <span id="p2-hp-text" class="text-white font-bold text-sm whitespace-nowrap">
-    100/100
-  </span>
-
-  <div class="flex-1 min-w-0">
-    <div class="player-hp-outer w-full h-6">
-      <div id="p2-hp" class="player-hp-inner bg-green-400" style="width:100%"></div>
-    </div>
-  </div>
-
-  <span id="p2-score" class="font-bold text-yellow-300 text-xl flex-shrink-0">0分</span>
-</div>
-
-<div class="grid grid-cols-4 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="1">
-  <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'，')">，</button>
-  <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'。')">。</button>
-  <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'、')">、</button>
-  <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'……')">……</button>
-  <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'；')">；</button>
-  <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'：')">：</button>
-  <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'？')">？</button>
-  <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'！')">！</button>
-  <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'「')">「</button>
-  <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'」')">」</button>
-  <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'《')">《</button>
-  <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'》')">》</button>
-</div>
-    </div>
   </div>
 </main>
 
