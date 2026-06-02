@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>標點符號打怪遊戲</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <style>
+    *{box-sizing:border-box;touch-action:manipulation}
+    html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#000}
+    body{font-family:system-ui,sans-serif}
+
+    .hidden{display:none!important}
+
+    .battle-bg{
+      background:#050208;
+      background-image:
+        linear-gradient(180deg,rgba(20,5,40,0.8),rgba(10,0,25,0.9)),
+        radial-gradient(ellipse at 30% 50%,rgba(100,30,80,0.15),transparent 50%),
+        radial-gradient(ellipse at 70% 50%,rgba(60,20,100,0.15),transparent 50%);
+      position:relative;
+    }
+
+    .monster{font-size:clamp(80px,12vw,160px);transition:transform 0.1s;filter:drop-shadow(0 0 20px rgba(255,50,50,0.6))}
+    .monster.shake{animation:shake 0.3s}
+    .monster.entrance{animation:entrance 0.8s cubic-bezier(0.34,1.56,0.64,1)}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    .float{animation:float 2s infinite ease-in-out}
+    @keyframes entrance{0%{transform:scale(0) translateY(-100px);opacity:0}100%{transform:scale(1) translateY(0);opacity:1}}
+
+    .hp-bar-outer{background:#1a1a1a;border:2px solid #fbbf24;border-radius:8px;overflow:hidden;box-shadow:0 0 10px rgba(251,191,36,0.3)}
+    .hp-bar-inner{transition:width 0.5s;height:100%;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e);border-radius:6px}
+
+    .player-hp-outer{background:#333;border-radius:6px;overflow:hidden;height:16px}
+    .player-hp-inner{transition:width 0.4s;height:100%;border-radius:6px}
+
+    .btn-punct{
+      min-width:60px;min-height:60px;font-size:2rem;border-radius:8px;
+      font-weight:bold;transition:transform 0.08s;
+      border:2px solid rgba(255,255,255,0.3);
+      box-shadow:0 2px 0 rgba(0,0,0,0.4);
+      position:relative;overflow:hidden;
+    }
+    .btn-punct::after{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(255,255,255,0.25) 0%,transparent 50%);
+      border-radius:10px;pointer-events:none;
+    }
+    .btn-punct:active{transform:scale(0.9) translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,0.3)}
+    .btn-punct:disabled{opacity:0.4;pointer-events:none}
+
+    .player-side{position:relative;display:flex;flex-direction:column;overflow:hidden}
+    .player-side.defeated{filter:grayscale(1) brightness(0.5);opacity:0.7}
+
+    .game-over-overlay{
+      position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+      background:rgba(0,0,0,0.6);z-index:50;animation:fade-in 0.5s;
+    }
+    @keyframes fade-in{from{opacity:0}to{opacity:1}}
+    .game-over-text{font-size:2rem;font-weight:900;color:#ff3333;text-shadow:0 0 15px rgba(255,50,50,0.8)}
+    .victory-text-side{font-size:2rem;font-weight:900;color:#fbbf24;text-shadow:0 0 15px rgba(251,191,36,0.8)}
+
+    @keyframes dmg-fly{0%{opacity:1;transform:translateY(0) scale(1.2)}100%{opacity:0;transform:translateY(-60px) scale(0.6)}}
+    .dmg-num{animation:dmg-fly 1s forwards;position:absolute;font-weight:900;font-size:1.5rem;color:#ff4444;text-shadow:0 0 6px #ff4444}
+
+    .result-overlay{
+      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+      background:rgba(0,0,0,0.85);z-index:100;animation:fade-in 0.5s;
+    }
+    .result-title{font-size:3rem;font-weight:900;text-shadow:0 0 30px currentColor}
+
+    .start-screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(30,10,50,0.95),rgba(10,5,25,0.95));z-index:200}
+    .start-content{text-align:center;animation:fade-in 0.8s}
+    .start-title{font-size:clamp(2rem,8vw,4.5rem);font-weight:900;color:#fbbf24;text-shadow:0 0 40px rgba(251,191,36,0.6),0 0 80px rgba(251,191,36,0.3);margin-bottom:1rem;letter-spacing:2px}
+    .start-subtitle{font-size:clamp(1rem,3vw,1.5rem);color:#c084fc;text-shadow:0 0 20px rgba(192,132,252,0.5);margin-bottom:3rem;letter-spacing:1px}
+    .start-btn{
+      padding:1rem 2.5rem;font-size:clamp(1.2rem,2vw,1.8rem);font-weight:900;color:#000;background:linear-gradient(180deg,#fef08a,#fbbf24);border:3px solid #fcd34d;border-radius:12px;cursor:pointer;transition:all 0.15s;box-shadow:0 6px 0 rgba(0,0,0,0.4),0 0 30px rgba(251,191,36,0.6);letter-spacing:1px;
+    }
+    .start-btn:active{transform:translateY(6px) scale(0.95);box-shadow:0 0 15px rgba(251,191,36,0.8)}
+
+    .mute-toggle,.fullscreen-toggle{
+      position:fixed;z-index:150;background:rgba(0,0,0,0.6);border:2px solid #fbbf24;border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;font-size:1.8rem;
+    }
+    .mute-toggle{top:1rem;right:1rem}
+    .fullscreen-toggle{top:1rem;right:5.5rem}
+
+    .question-panel-new{
+      background:linear-gradient(180deg,rgba(50,30,80,0.98),rgba(30,15,60,0.98));
+      border:4px solid #fbbf24;border-radius:8px;box-shadow:0 0 25px rgba(251,191,36,0.5);padding:1.5rem;
+      max-width:100%;margin:0;word-wrap:break-word;overflow-wrap:break-word;
+    }
+    .question-panel-new p{color:#fbbf24;font-size:1rem;margin-bottom:0.75rem;letter-spacing:1px;font-weight:700}
+    .question-panel-new .question-text{color:#fff;font-size:1.5rem;font-weight:700;line-height:1.8;text-shadow:0 0 10px rgba(251,191,36,0.3);white-space:normal}
+  </style>
+</head>
+
+<body class="w-full flex items-center justify-center" style="height:100vh;background:#0f0a1e">
+
+<div id="fullscreen-toggle" class="fullscreen-toggle" onclick="toggleFullscreen()">⛶</div>
+<div id="mute-toggle" class="mute-toggle" onclick="toggleMute()">🔊</div>
+
+<div id="start-screen" class="start-screen">
+  <div class="start-content">
+    <div class="start-title">中文標點地下城</div>
+    <div class="start-subtitle">擊敗Boss，成為最強勇者！</div>
+    <button onclick="startGame()" class="start-btn">【開始冒險】</button>
+  </div>
+</div>
+
+<main id="game-container" class="hidden flex flex-col" style="width:100%;height:100vh">
+  <div class="flex flex-1 min-h-0">
+
+    <div id="side-0" class="player-side flex-1 battle-bg border-r-2 border-yellow-600 flex flex-col">
+      <div class="flex-1 flex flex-col items-center justify-center relative min-h-0 py-3">
+        <div id="monster-0" class="monster float">👾</div>
+        <div class="hp-bar-outer w-2/3 h-5 mt-2"><div id="boss-hp-0" class="hp-bar-inner" style="width:100%"></div></div>
+        <div id="boss-hp-text-0" class="text-lg text-yellow-300 font-bold mt-2">HP 500/500</div>
+        <div id="dmg-0" class="absolute inset-0 pointer-events-none"></div>
+      </div>
+
+      <div class="px-2 py-1 flex-shrink-0">
+        <div class="question-panel-new !px-4 !py-3 !m-0">
+          <p class="!text-sm !mb-2">選擇正確標點符號：</p>
+          <div id="question-text-p0" class="question-text !text-xl !leading-loose"></div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between px-3 py-1 bg-black/40 flex-shrink-0 gap-2">
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <span class="text-lg">🛡️</span><span class="font-bold text-lg text-white">騎士</span>
+        </div>
+        <div class="flex-1 min-w-0"><div class="player-hp-outer w-full h-6"><div id="p1-hp" class="player-hp-inner bg-green-400" style="width:100%"></div></div></div>
+        <span id="p1-score" class="font-bold text-yellow-300 text-xl flex-shrink-0">0分</span>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 p-3 bg-black/50 flex-shrink-0" data-player="0">
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'，')">，</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'。')">。</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'、')">、</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'；')">；</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'：')">：</button>
+        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'？')">？</button>
+        <button class="btn-punct bg-red-600 text-white col-span-3" onclick="answer(0,'！')">！</button>
+      </div>
+    </div>
+
+    <div id="side-1" class="player-side flex-1 battle-bg border-l-2 border-yellow-600 flex flex-col">
+      <div class="flex-1 flex flex-col items-center justify-center relative min-h-0 py-3">
+        <div id="monster-1" class="monster float">🐉</div>
+        <div class="hp-bar-outer w-3/4 h-5 mt-1"><div id="boss-hp-1" class="hp-bar-inner" style="width:100%"></div></div>
+        <div id="boss-hp-text-1" class="text-lg text-yellow-300 font-bold mt-2">HP 500/500</div>
+        <div id="dmg-1" class="absolute inset-0 pointer-events-none"></div>
+      </div>
+
+      <div class="px-2 py-1 flex-shrink-0">
+        <div class="question-panel-new !px-4 !py-3 !m-0">
+          <p class="!text-sm !mb-2">選擇正確標點符號：</p>
+          <div id="question-text-p1" class="question-text !text-xl !leading-loose"></div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between px-3 py-1 bg-black/40 flex-shrink-0 gap-2">
+        <div class="flex items-center gap-1 flex-shrink-0">
+          <span class="text-lg">🧙</span><span class="font-bold text-lg text-white">法師</span>
+        </div>
+        <div class="flex-1 min-w-0"><div class="player-hp-outer w-full h-6"><div id="p2-hp" class="player-hp-inner bg-green-400" style="width:100%"></div></div></div>
+        <span id="p2-score" class="font-bold text-yellow-300 text-xl flex-shrink-0">0分</span>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 p-3 bg-black/50 flex-shrink-0" data-player="1">
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'，')">，</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'。')">。</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'、')">、</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'；')">；</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'：')">：</button>
+        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'？')">？</button>
+        <button class="btn-punct bg-blue-600 text-white col-span-3" onclick="answer(1,'！')">！</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="result-overlay" class="result-overlay hidden">
+  <div class="text-center">
+    <div id="result-icon" class="text-5xl mb-4"></div>
+    <div id="result-title" class="result-title mb-4"></div>
+    <div id="result-detail" class="text-white text-lg mb-6"></div>
+    <button onclick="restartGame()" class="px-8 py-3 bg-gradient-to-b from-yellow-400 to-yellow-600 text-black font-bold text-lg rounded-lg border-2 border-yellow-300 active:scale-95 transition-transform">重新挑戰</button>
+  </div>
+</div>
+
+<script>
+let soundEnabled=true;
+let audioContext=null;
+
+function ensureAudioContext(){
+  if(!audioContext){
+    audioContext=new(window.AudioContext||window.webkitAudioContext)();
+  }
+}
+
+function playTone(freq,duration,type='sine',volume=0.3){
+  if(!soundEnabled)return;
+  try{
+    ensureAudioContext();
+    const osc=audioContext.createOscillator();
+    const gain=audioContext.createGain();
+    osc.connect(gain);
+    gain.connect(audioContext.destination);
+    osc.type=type;
+    osc.frequency.value=freq;
+    gain.gain.setValueAtTime(volume,audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01,audioContext.currentTime+duration);
+    osc.start(audioContext.currentTime);
+    osc.stop(audioContext.currentTime+duration);
+  }catch(e){}
+}
+
+function playCorrectSound(){playTone(523.25,0.1);playTone(659.25,0.15);playTone(783.99,0.2)}
+function playWrongSound(){playTone(220,0.15);playTone(164.81,0.2)}
+function playBossHitSound(){playTone(440,0.05,'sawtooth');playTone(660,0.1,'sawtooth')}
+function playGameOverSound(){playTone(392,0.15);playTone(329.63,0.15);playTone(246.94,0.3)}
+function playVictorySound(){playTone(523.25,0.15);playTone(659.25,0.15);playTone(783.99,0.3)}
+function playStartSound(){playTone(440,0.1);playTone(554.37,0.1);playTone(659.25,0.2)}
+
+function toggleMute(){
+  soundEnabled=!soundEnabled;
+  document.getElementById('mute-toggle').textContent=soundEnabled?'🔊':'🔇';
+}
+
+function toggleFullscreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen().catch(()=>{});
+  }else{
+    document.exitFullscreen().catch(()=>{});
+  }
+}
+
+function startGame(){
+  ensureAudioContext();
+  playStartSound();
+  document.getElementById('start-screen').style.display='none';
+  document.getElementById('game-container').classList.remove('hidden');
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen().catch(()=>{});
+  }
+  initGame();
+  animateBossEntrance();
+}
+
+function animateBossEntrance(){
+  document.getElementById('monster-0').classList.add('entrance');
+  document.getElementById('monster-1').classList.add('entrance');
+  setTimeout(()=>{
+    document.getElementById('monster-0').classList.remove('entrance');
+    document.getElementById('monster-1').classList.remove('entrance');
+  },900);
+}
+
+const questions=[
+  {sentence:'今天下雨了___我們取消了旅行。',answer:['，']},
+  {sentence:'小美喜歡唱歌___跳舞和畫畫。',answer:['、']},
+  {sentence:'你今天有沒有做功課___',answer:['？']},
+  {sentence:'哇___這朵花真漂亮___',answer:['！','！']},
+  {sentence:'小明心想___我一定要努力溫習。',answer:['：']},
+  {sentence:'媽媽說___「吃飯前要洗手。」',answer:['：']},
+  {sentence:'森林裏有兔子___松鼠和小鳥。',answer:['、']},
+  {sentence:'放學後___我們一起去圖書館看書。',answer:['，']},
+  {sentence:'小狗不停地叫___真吵啊___',answer:['，','！']},
+  {sentence:'你為甚麼哭___',answer:['？']},
+  {sentence:'哥哥大聲說___「我們成功了___」',answer:['：','！']},
+  {sentence:'今天是我的生日___我很開心。',answer:['，']},
+  {sentence:'小華心想___如果我努力練習，一定會進步。',answer:['：']},
+  {sentence:'教室裏十分安靜___大家都在專心考試。',answer:['，']},
+  {sentence:'太好了___我們終於完成比賽了___',answer:['！','！']},
+  {sentence:'公園裏有鞦韆___滑梯和沙池。',answer:['、']},
+  {sentence:'你知道這本書是誰的嗎___',answer:['？']},
+  {sentence:'爸爸提醒我___要準時睡覺。',answer:['：']},
+  {sentence:'小明一邊跑步___一邊唱歌。',answer:['，']},
+  {sentence:'今天的天氣真熱___',answer:['！']},
+  {sentence:'小美心想___明天一定要早起。',answer:['：']},
+  {sentence:'小鳥在天空中飛來飛去___十分自由。',answer:['，']},
+  {sentence:'你願意和我一起玩遊戲嗎___',answer:['？']},
+  {sentence:'校長宣布___「下星期舉行運動會。」',answer:['：']},
+  {sentence:'妹妹喜歡吃蘋果___香蕉和西瓜。',answer:['、']},
+  {sentence:'糟糕___我忘記帶功課了___',answer:['！','！']},
+  {sentence:'哥哥問我___「你完成溫習了嗎___」',answer:['：','？']},
+  {sentence:'放學後___同學們開心地回家。',answer:['，']},
+  {sentence:'小強心想___我要成為一位勇敢的騎士。',answer:['：']},
+  {sentence:'大家一起歡呼___我們打敗Boss了___',answer:['：','！']},
+  {sentence:'閱讀圖書能增進知識___瀏覽互聯網能獲得最新資訊。',answer:['；']},
+  {sentence:'小時候，祖父是最疼愛我的保母___我長大後，祖父是我最好的人生導師。',answer:['；']},
+  {sentence:'小時候，我在樹下玩捉迷藏___長大了，我在樹下編織夢想。',answer:['；']},
+  {sentence:'夏天來了，大家汗流浹背___冬天來了，大家冷得發抖。',answer:['；']},
+  {sentence:'有些同學喜歡閱讀小說___有些同學喜歡閱讀科學書。',answer:['；']}
+];
+
+const maxBossHP=500,maxPlayerHP=100;
+const scores=[0,0],combos=[0,0],playerHP=[100,100],bossHP=[500,500];
+const currentInput=[0,0];
+const playerState=['playing','playing'];
+let currentQuestion=[null,null];
+
+function getRandomQuestion(excludeQuestion=null){
+  let q;
+  do{
+    q=questions[Math.floor(Math.random()*questions.length)];
+  }while(excludeQuestion && q.sentence===excludeQuestion.sentence && questions.length>1);
+  return q;
+}
+
+function assignNewQuestion(player){
+  const otherPlayer=player===0?1:0;
+  currentQuestion[player]=getRandomQuestion(currentQuestion[otherPlayer]);
+  currentInput[player]=0;
+  renderQuestion(player);
+}
+
+function renderQuestion(player){
+  const q=currentQuestion[player];
+  if(!q)return;
+  let sentence=q.sentence;
+  sentence=sentence.replace(/___/g,'<span class="inline-block w-4 border-b-4 border-dashed border-yellow-400 mx-1"></span>');
+  document.getElementById(`question-text-p${player}`).innerHTML=sentence;
+}
+
+function initQuestions(){
+  currentQuestion[0]=getRandomQuestion();
+  currentQuestion[1]=getRandomQuestion(currentQuestion[0]);
+  currentInput[0]=0;
+  currentInput[1]=0;
+  renderQuestion(0);
+  renderQuestion(1);
+}
+
+function updateBossHP(p){
+  const pct=Math.max(0,bossHP[p])/maxBossHP*100;
+  document.getElementById(`boss-hp-${p}`).style.width=pct+'%';
+  document.getElementById(`boss-hp-text-${p}`).textContent=`HP ${Math.max(0,bossHP[p])}/${maxBossHP}`;
+}
+
+function updatePlayerHP(p){
+  const pct=Math.max(0,playerHP[p]);
+  const el=document.getElementById(`p${p+1}-hp`);
+  el.style.width=pct+'%';
+  el.className='player-hp-inner '+(pct<=30?'bg-red-400':pct<=60?'bg-yellow-400':'bg-green-400');
+}
+
+function showDamage(p,dmg){
+  const el=document.createElement('div');
+  el.className='dmg-num';
+  el.textContent=`-${dmg}`;
+  el.style.left=(30+Math.random()*40)+'%';
+  el.style.top=(20+Math.random()*30)+'%';
+  document.getElementById(`dmg-${p}`).appendChild(el);
+  setTimeout(()=>el.remove(),1000);
+}
+
+function checkEnd(){
+  const done=playerState.every(s=>s!=='playing');
+  if(!done)return;
+
+  const overlay=document.getElementById('result-overlay');
+  const icon=document.getElementById('result-icon');
+  const title=document.getElementById('result-title');
+  const detail=document.getElementById('result-detail');
+
+  if(playerState[0]==='won'&&playerState[1]==='dead'){
+    icon.textContent='🏆';title.textContent='玩家1 勝利！';title.style.color='#fbbf24';detail.textContent=`騎士 ${scores[0]}分`;
+  }else if(playerState[1]==='won'&&playerState[0]==='dead'){
+    icon.textContent='🏆';title.textContent='玩家2 勝利！';title.style.color='#fbbf24';detail.textContent=`法師 ${scores[1]}分`;
+  }else if(playerState[0]==='won'&&playerState[1]==='won'){
+    if(scores[0]>scores[1]){
+      icon.textContent='🏆';title.textContent='玩家1 勝利！';title.style.color='#fbbf24';
+    }else if(scores[1]>scores[0]){
+      icon.textContent='🏆';title.textContent='玩家2 勝利！';title.style.color='#fbbf24';
+    }else{
+      icon.textContent='🤝';title.textContent='平手！';title.style.color='#60a5fa';
+    }
+    detail.textContent=`騎士 ${scores[0]}分 vs 法師 ${scores[1]}分`;
+  }else{
+    icon.textContent='💀';title.textContent='MISSION FAILED';title.style.color='#dc2626';detail.textContent='兩位玩家都陣亡了...';
+  }
+  overlay.classList.remove('hidden');
+}
+
+function showSideOverlay(p,type){
+  const side=document.getElementById(`side-${p}`);
+  if(side.querySelector('.game-over-overlay'))return;
+  const ov=document.createElement('div');
+  ov.className='game-over-overlay';
+  if(type==='dead'){
+    ov.innerHTML='<div class="game-over-text">GAME OVER</div>';
+    side.classList.add('defeated');
+  }else{
+    ov.innerHTML='<div class="victory-text-side">勝利！🎉</div>';
+  }
+  side.appendChild(ov);
+}
+
+function answer(p,punct){
+  if(playerState[p]!=='playing')return;
+
+  const q=currentQuestion[p];
+  if(!q)return;
+
+  const expected=q.answer[currentInput[p]];
+
+  if(punct===expected){
+    playCorrectSound();
+
+    if(currentInput[p]===q.answer.length-1){
+      currentInput[p]=0;
+      combos[p]++;
+
+      let dmg=20;
+      if(combos[p]>=5)dmg=40;
+      else if(combos[p]>=3)dmg=30;
+
+      bossHP[p]-=dmg;
+      scores[p]+=combos[p]>=3?20:10;
+
+      playBossHitSound();
+
+      const mon=document.getElementById(`monster-${p}`);
+      mon.classList.add('shake');
+      setTimeout(()=>mon.classList.remove('shake'),300);
+
+      showDamage(p,dmg);
+
+      if(bossHP[p]<=0){
+        bossHP[p]=0;
+        playerState[p]='won';
+        playVictorySound();
+        showSideOverlay(p,'won');
+        document.querySelectorAll(`[data-player="${p}"] button`).forEach(b=>b.disabled=true);
+      }else{
+        assignNewQuestion(p);
+      }
+
+      updateBossHP(p);
+      document.getElementById(`p${p+1}-score`).textContent=scores[p]+'分';
+      checkEnd();
+
+    }else{
+      currentInput[p]++;
+    }
+
+  }else{
+    playWrongSound();
+    currentInput[p]=0;
+    combos[p]=0;
+    playerHP[p]-=15;
+    updatePlayerHP(p);
+
+    const side=document.getElementById(`side-${p}`);
+    side.classList.add('shake');
+    setTimeout(()=>side.classList.remove('shake'),300);
+
+    if(playerHP[p]<=0){
+      playerHP[p]=0;
+      playerState[p]='dead';
+      playGameOverSound();
+      showSideOverlay(p,'dead');
+      document.querySelectorAll(`[data-player="${p}"] button`).forEach(b=>b.disabled=true);
+      checkEnd();
+    }
+  }
+}
+
+function restartGame(){
+  scores.fill(0);
+  combos.fill(0);
+  playerHP.fill(maxPlayerHP);
+  bossHP.fill(maxBossHP);
+  currentInput.fill(0);
+  playerState[0]='playing';
+  playerState[1]='playing';
+
+  document.getElementById('result-overlay').classList.add('hidden');
+
+  for(let i=0;i<2;i++){
+    const side=document.getElementById(`side-${i}`);
+    side.classList.remove('defeated');
+    const ov=side.querySelector('.game-over-overlay');
+    if(ov)ov.remove();
+    document.querySelectorAll(`[data-player="${i}"] button`).forEach(b=>b.disabled=false);
+    updatePlayerHP(i);
+    updateBossHP(i);
+    document.getElementById(`p${i+1}-score`).textContent='0分';
+  }
+
+  initQuestions();
+  animateBossEntrance();
+}
+
+function initGame(){
+  initQuestions();
+  updateBossHP(0);
+  updateBossHP(1);
+  updatePlayerHP(0);
+  updatePlayerHP(1);
+}
+</script>
+</body>
+</html>
