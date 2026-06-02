@@ -185,7 +185,7 @@
 
     <div id="side-0" class="player-side flex-1 battle-bg border-r-2 border-yellow-600 flex flex-col">
       <div class="flex-1 flex flex-col items-center justify-center relative min-h-0 py-1">
-        <div id="monster-0" class="monster float">👾</div>
+        <div id="monster-0" class="monster float"></div>
         <div class="hp-bar-outer w-2/3 h-5 mt-2"><div id="boss-hp-0" class="hp-bar-inner" style="width:100%"></div></div>
         <div id="boss-hp-text-0" class="text-lg text-yellow-300 font-bold mt-2">HP 500/500</div>
         <div id="dmg-0" class="absolute inset-0 pointer-events-none"></div>
@@ -219,7 +219,7 @@
 
     <div id="side-1" class="player-side flex-1 battle-bg border-l-2 border-yellow-600 flex flex-col">
       <div class="flex-1 flex flex-col items-center justify-center relative min-h-0 py-3">
-        <div id="monster-1" class="monster float">🐉</div>
+        <div id="monster-1" class="monster float"></div>
         <div class="hp-bar-outer w-3/4 h-5 mt-1"><div id="boss-hp-1" class="hp-bar-inner" style="width:100%"></div></div>
         <div id="boss-hp-text-1" class="text-lg text-yellow-300 font-bold mt-2">HP 500/500</div>
         <div id="dmg-1" class="absolute inset-0 pointer-events-none"></div>
@@ -329,7 +329,19 @@ function animateBossEntrance(){
     document.getElementById('monster-1').classList.remove('entrance');
   },900);
 }
+const bossList = [
+  "👹",
+  "🧟‍♂️",
+  "🦹🏻‍♀️",
+  "👺",
+  "🧞‍♀️",
+  "🧌",
+  "🧛🏼"
+];
 
+function randomBoss(){
+  return bossList[Math.floor(Math.random()*bossList.length)];
+}
 const questions=[
   {sentence:'今天下雨了___我們取消了旅行。',answer:['，']},
   {sentence:'小美喜歡唱歌___跳舞和畫畫。',answer:['、']},
@@ -375,6 +387,10 @@ const currentInput=[0,0];
 const playerState=['playing','playing'];
 let currentQuestion=[null,null];
 
+function randomBoss(){
+  return bossList[Math.floor(Math.random()*bossList.length)];
+}
+  
 function getRandomQuestion(excludeQuestion=null){
   let q;
   do{
@@ -399,6 +415,8 @@ function renderQuestion(player){
 }
 
 function initQuestions(){
+  document.getElementById('monster-0').textContent = randomBoss();
+  document.getElementById('monster-1').textContent = randomBoss();
   currentQuestion[0]=getRandomQuestion();
   currentQuestion[1]=getRandomQuestion(currentQuestion[0]);
   currentInput[0]=0;
