@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>題庫編輯器</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+
+body{
+  background:#12051f;
+  color:white;
+  font-family:sans-serif;
+}
+
+.card{
+  background:rgba(255,255,255,0.08);
+  border:2px solid rgba(255,255,255,0.12);
+  border-radius:18px;
+  padding:18px;
+}
+
+textarea,input{
+  background:#1f1230;
+  border:2px solid #5b3a78;
+  border-radius:10px;
+  padding:12px;
+  width:100%;
+  color:white;
+}
+
+button{
+  transition:0.15s;
+}
+
+button:active{
+  transform:scale(0.95);
+}
+
+.question-preview{
+  line-height:2;
+  font-size:1.2rem;
+}
+
+</style>
+</head>
+
+<body class="p-4">
+
+<h1 class="text-4xl font-black text-yellow-300 mb-6">
+📝 標點地下城 題庫編輯器
+</h1>
+
+<div class="card mb-6">
+
+  <label class="block mb-2 font-bold text-yellow-200">
+    題目句子（用 ___ 留空）
+  </label>
+
+  <textarea
+    id="sentence"
+    rows="3"
+    placeholder="例如：媽媽說___「早點睡覺。」">
+  </textarea>
+
+  <label class="block mt-4 mb-2 font-bold text-yellow-200">
+    答案（多個答案用逗號分隔）
+  </label>
+
+  <input
+    id="answer"
+    placeholder="例如：： 或 ：,？">
+
+  <button
+    onclick="addQuestion()"
+    class="mt-5 w-full bg-yellow-400 text-black font-black py-3 rounded-xl text-xl">
+    ➕ 加入題目
+  </button>
+
+</div>
+
+<div class="flex gap-3 mb-5">
+
+  <button
+    onclick="copyQuestionsJS()"
+    class="flex-1 bg-green-500 text-black font-black py-3 rounded-xl text-lg">
+    📋 複製 questions.js
+  </button>
+
+  <button
+    onclick="openGitHubEdit()"
+    class="flex-1 bg-blue-500 text-white font-black py-3 rounded-xl text-lg">
+    🌐 打開 GitHub 編輯頁
+  </button>
+
+</div>
+
+<div class="mb-4 text-yellow-200 text-lg">
+目前共有：
+<span id="question-count" class="font-black text-yellow-300">0</span>
+題
+</div>
+
+<div id="question-list" class="space-y-4"></div>
+
+<script>
+
+let questions = [];
+
+function renderQuestions(){
+
+  const list = document.getElementById("question-list");
+  const count = document.getElementById("question-count");
+
+  count.textContent = questions.length;
+
+  if(questions.length === 0){
+
+    list.innerHTML = `
+      <div class="text-center text-gray-400 text-xl py-10">
+        尚未加入題目
+      </div>
+    `;
+
+    return;
+  }
+
+  list.innerHTML = "";
+
+  questions.forEach((q,index)=>{
+
+    const div = document.createElement("div");
+
+    div.className = "card";
+
+    const preview = q.sentence.replaceAll(
+      "___",
+      `<span class="inline-block border-b-4 border-yellow-400 w-6 mx-1"></span>`
+    );
+
+    div.innerHTML = `
+
+      <div class="text-yellow-300 font-black text-xl mb-2">
+        第 ${index+1} 題
+      </div>
+
+      <div class="question-preview mb-3">
+        ${preview}
+      </div>
+
+      <div class="text-green-300 text-lg mb-4">
+        答案：${q.answer.join("、")}
+      </div>
+
+      <div class="flex gap-3">
+
+        <button
+          onclick="moveUp(${index})"
+          class="bg-purple-500 px-4 py-2 rounded-lg font-bold">
+          ⬆ 上移
+        </button>
+
+        <button
+          onclick="moveDown(${index})"
+          class="bg-indigo-500 px-4 py-2 rounded-lg font-bold">
+          ⬇ 下移
+        </button>
+
+        <button
+          onclick="deleteQuestion(${index})"
+          class="bg-red-500 px-5 py-2 rounded-lg font-bold">
+          刪除
+        </button>
+
+      </div>
+    `;
+
+    list.appendChild(div);
+
+  });
+
+}
+
+function addQuestion(){
+
+  const sentence =
+    document.getElementById("sentence").value.trim();
+
+  const answer =
+    document.getElementById("answer").value.trim();
+
+  if(!sentence || !answer){
+
+    alert("請輸入題目和答案");
+
+    return;
+  }
+
+  const answerArray = answer
+    .split(",")
+    .map(a=>a.trim())
+    .filter(a=>a);
+
+  questions.push({
+    sentence:sentence,
+    answer:answerArray
+  });
+
+  document.getElementById("sentence").value = "";
+  document.getElementById("answer").value = "";
+
+  renderQuestions();
+}
+
+function deleteQuestion(index){
+
+  questions.splice(index,1);
+
+  renderQuestions();
+}
+
+function moveUp(index){
+
+  if(index === 0) return;
+
+  [questions[index-1], questions[index]] =
+  [questions[index], questions[index-1]];
+
+  renderQuestions();
+}
+
+function moveDown(index){
+
+  if(index === questions.length-1) return;
+
+  [questions[index+1], questions[index]] =
+  [questions[index], questions[index+1]];
+
+  renderQuestions();
+}
+
+function copyQuestionsJS(){
+
+  const content =
+`const questions = ${JSON.stringify(questions,null,2)};`;
+
+  navigator.clipboard.writeText(content);
+
+  alert("questions.js 已複製！");
+}
+
+function openGitHubEdit(){
+
+  window.open(
+    "https://github.com/你的帳號/你的repo/edit/main/questions.js",
+    "_blank"
+  );
+}
+
+renderQuestions();
+
+</script>
+
+</body>
+</html>
+
