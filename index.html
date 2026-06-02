@@ -21,7 +21,7 @@
       position:relative;
     }
 
-    .monster{font-size:clamp(80px,12vw,160px);transition:transform 0.1s;filter:drop-shadow(0 0 20px rgba(255,50,50,0.6))}
+    .monster{font-size:clamp(70px,9vw,130px);transition:transform 0.1s;filter:drop-shadow(0 0 20px rgba(255,50,50,0.6))}
     .monster.shake{animation:shake 0.3s}
     .monster.entrance{animation:entrance 0.8s cubic-bezier(0.34,1.56,0.64,1)}
     @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
@@ -95,7 +95,7 @@
   </style>
 </head>
 
-<body class="w-full flex items-center justify-center" style="height:100vh;background:#0f0a1e">
+<body class="w-full flex items-center justify-center" style="height:92vh;background:#0f0a1e">
 
 <div id="fullscreen-toggle" class="fullscreen-toggle" onclick="toggleFullscreen()">⛶</div>
 <div id="mute-toggle" class="mute-toggle" onclick="toggleMute()">🔊</div>
@@ -108,11 +108,11 @@
   </div>
 </div>
 
-<main id="game-container" class="hidden flex flex-col" style="width:100%;height:100vh">
+<main id="game-container" class="hidden flex flex-col" style="width:100%;height:92vh">
   <div class="flex flex-1 min-h-0">
 
     <div id="side-0" class="player-side flex-1 battle-bg border-r-2 border-yellow-600 flex flex-col">
-      <div class="flex-1 flex flex-col items-center justify-center relative min-h-0 py-3">
+      <div class="flex-1 flex flex-col items-center justify-center relative min-h-0 py-1">
         <div id="monster-0" class="monster float">👾</div>
         <div class="hp-bar-outer w-2/3 h-5 mt-2"><div id="boss-hp-0" class="hp-bar-inner" style="width:100%"></div></div>
         <div id="boss-hp-text-0" class="text-lg text-yellow-300 font-bold mt-2">HP 500/500</div>
