@@ -319,6 +319,7 @@ const questions=[
 
 const maxBossHP=500,maxPlayerHP=100;
 const scores=[0,0],combos=[0,0],playerHP=[100,100],bossHP=[500,500];
+const correctCount=[0,0], wrongCount=[0,0], defeatedBossCount=[0,0];
 const currentInput=[0,0];
 const playerState=['playing','playing'];
 let currentQuestion=[null,null];
@@ -414,6 +415,12 @@ function checkEnd(){
   }else{
     icon.textContent='💀';title.textContent='MISSION FAILED';title.style.color='#dc2626';detail.textContent='兩位玩家都陣亡了...';
   }
+  detail.innerHTML = `
+  <div style="font-size:1.4rem; line-height:1.8;">
+    <p>🛡️ 騎士：${scores[0]}分｜擊敗 ${defeatedBossCount[0]} 隻Boss｜答對 ${correctCount[0]} 題｜答錯 ${wrongCount[0]} 題</p>
+    <p>🧙 法師：${scores[1]}分｜擊敗 ${defeatedBossCount[1]} 隻Boss｜答對 ${correctCount[1]} 題｜答錯 ${wrongCount[1]} 題</p>
+  </div>
+`;
   overlay.classList.remove('hidden');
 }
 
@@ -452,7 +459,7 @@ function answer(p,punct){
 
       bossHP[p]-=dmg;
       scores[p]+=combos[p]>=3?20:10;
-
+      correctCount[p]++;
       playBossHitSound();
 
       const mon=document.getElementById(`monster-${p}`);
@@ -461,8 +468,9 @@ function answer(p,punct){
 
       showDamage(p,dmg);
 
-      if(bossHP[p]<=0){
-        bossHP[p]=0;
+if(bossHP[p]<=0){
+  defeatedBossCount[p]++;
+  bossHP[p]=0;
         playerState[p]='won';
         playVictorySound();
         showSideOverlay(p,'won');
@@ -483,6 +491,7 @@ function answer(p,punct){
     playWrongSound();
     currentInput[p]=0;
     combos[p]=0;
+    wrongCount[p]++;
     playerHP[p]-=15;
     updatePlayerHP(p);
 
@@ -504,6 +513,9 @@ function answer(p,punct){
 function restartGame(){
   scores.fill(0);
   combos.fill(0);
+  correctCount.fill(0);
+wrongCount.fill(0);
+defeatedBossCount.fill(0);
   playerHP.fill(maxPlayerHP);
   bossHP.fill(maxBossHP);
   currentInput.fill(0);
