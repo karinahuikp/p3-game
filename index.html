@@ -152,7 +152,29 @@
       position:relative;
       overflow:hidden;
     }
+.btn-action{
+  min-width:64px;
+  min-height:60px;
+  font-size:1.1rem;
+  border-radius:14px;
+  font-weight:900;
+  border:3px solid rgba(255,255,255,0.35);
+  background:#facc15;
+  color:#111827;
+  box-shadow:0 5px 0 rgba(0,0,0,0.45);
+}
 
+.btn-action:active{
+  transform:scale(0.92) translateY(4px);
+}
+
+.btn-punct{
+  min-width:52px;
+  min-height:48px;
+  font-size:1.7rem;
+}
+
+   
     .btn-punct::after{
       content:'';
       position:absolute;
@@ -421,21 +443,27 @@
 </div>
       </div>
 
-      <div class="grid grid-cols-4 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="0">
-        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'，')">，</button>
-        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'。')">。</button>
-        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'、')">、</button>
-        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'……')">……</button>
-        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'；')">；</button>
-        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'：')">：</button>
-        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'？')">？</button>
-        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'！')">！</button>
-        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'「')">「</button>
-        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'」')">」</button>
-        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'《')">《</button>
-        <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'》')">》</button>
-      </div>
-    </div>
+      <div class="flex gap-2 p-2 bg-black/50 flex-shrink-0">
+  <div class="flex flex-col gap-2">
+    <button class="btn-action" onclick="clearAnswer(0)">取消</button>
+    <button class="btn-action" onclick="submitAnswer(0)">確定</button>
+  </div>
+
+  <div class="grid grid-cols-4 gap-1.5 flex-1" data-player="0">
+    <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'，')">，</button>
+    <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'。')">。</button>
+    <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'、')">、</button>
+    <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'……')">……</button>
+    <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'；')">；</button>
+    <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'：')">：</button>
+    <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'？')">？</button>
+    <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'！')">！</button>
+    <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'「')">「</button>
+    <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'」')">」</button>
+    <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'《')">《</button>
+    <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'》')">》</button>
+  </div>
+</div>
 
     <!-- 玩家2 -->
     <div id="side-1" class="player-side flex-1 battle-bg border-l-2 border-yellow-600 flex flex-col">
@@ -487,21 +515,27 @@
 </div>
       </div>
 
-      <div class="grid grid-cols-4 gap-1.5 p-2 bg-black/50 flex-shrink-0" data-player="1">
-        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'，')">，</button>
-        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'。')">。</button>
-        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'、')">、</button>
-        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'……')">……</button>
-        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'；')">；</button>
-        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'：')">：</button>
-        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'？')">？</button>
-        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'！')">！</button>
-        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'「')">「</button>
-        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'」')">」</button>
-        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'《')">《</button>
-        <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'》')">》</button>
-      </div>
-    </div>
+<div class="flex gap-2 p-2 bg-black/50 flex-shrink-0">
+  <div class="grid grid-cols-4 gap-1.5 flex-1" data-player="1">
+    <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'，')">，</button>
+    <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'。')">。</button>
+    <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'、')">、</button>
+    <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'……')">……</button>
+    <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'；')">；</button>
+    <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'：')">：</button>
+    <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'？')">？</button>
+    <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'！')">！</button>
+    <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'「')">「</button>
+    <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'」')">」</button>
+    <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'《')">《</button>
+    <button class="btn-punct bg-blue-600 text-white" onclick="answer(1,'》')">》</button>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <button class="btn-action" onclick="clearAnswer(1)">取消</button>
+    <button class="btn-action" onclick="submitAnswer(1)">確定</button>
+  </div>
+</div>
 
   </div>
 </main>
@@ -767,75 +801,105 @@ function showSideOverlay(p,type){
 
 function answer(p,punct){
   playClickSound();
+
   if(playerState[p]!=='playing')return;
 
   const q=currentQuestion[p];
   if(!q)return;
 
-  const expected=q.answer[currentInput[p]];
+  if(currentAnswers[p].length >= q.answer.length)return;
 
-  if(punct===expected){
-    playCorrectSound();
+  currentAnswers[p].push(punct);
+  currentInput[p]=currentAnswers[p].length;
 
-    if(currentInput[p]===q.answer.length-1){
-      currentInput[p]=0;
-      currentAnswers[p]=[];
-      combos[p]++;
-      document.getElementById(`p${p+1}-combo`).textContent =
-  combos[p] + " Combo!";
-      
-      let dmg=20;
-      if(combos[p]>=5)dmg=40;
-      else if(combos[p]>=3)dmg=30;
-
-      bossHP[p]-=dmg;
-      scores[p]+=combos[p]>=3?20:10;
-      correctCount[p]++;
-if(combos[p] > 0 && combos[p] % 3 === 0){
-  playerHP[p] = Math.min(maxPlayerHP, playerHP[p] + 20);
-  updatePlayerHP(p);
+  renderQuestion(p);
 }
-      playBossHitSound();
 
-      const mon=document.getElementById(`monster-${p}`);
-      mon.classList.add('shake');
-      setTimeout(()=>mon.classList.remove('shake'),300);
+function clearAnswer(p){
+  playClickSound();
 
-      showDamage(p,dmg);
+  if(playerState[p]!=='playing')return;
 
-      if(bossHP[p]<=0){
-  defeatedBossCount[p]++;
-  playVictorySound();
+  currentAnswers[p]=[];
+  currentInput[p]=0;
 
-  const otherPlayer = p===0 ? 1 : 0;
+  renderQuestion(p);
+}
 
-  if(playerState[otherPlayer]==='dead'){
-    playerState[p]='won';
-    showSideOverlay(p,'won');
+function submitAnswer(p){
+  playClickSound();
 
-    document.querySelectorAll(`[data-player="${p}"] button`).forEach(b=>b.disabled=true);
+  if(playerState[p]!=='playing')return;
 
-    checkEnd();
+  const q=currentQuestion[p];
+  if(!q)return;
+
+  if(currentAnswers[p].length !== q.answer.length){
+    alert("請先完成所有空格！");
     return;
   }
 
-  bossHP[p]=maxBossHP;
-  document.getElementById(`monster-${p}`).textContent=randomBoss();
-  assignNewQuestion(p);
+  const isCorrect =
+    q.answer.every((ans,index)=>ans===currentAnswers[p][index]);
 
-}else{
-  assignNewQuestion(p);
-}
+  if(isCorrect){
+    playCorrectSound();
 
-      updateBossHP(p);
-      document.getElementById(`p${p+1}-score`).textContent=scores[p]+'分';
-      checkEnd();
+    currentInput[p]=0;
+    currentAnswers[p]=[];
+    combos[p]++;
+
+    document.getElementById(`p${p+1}-combo`).textContent =
+      combos[p] + " Combo!";
+
+    let dmg=20;
+    if(combos[p]>=5)dmg=40;
+    else if(combos[p]>=3)dmg=30;
+
+    bossHP[p]-=dmg;
+    scores[p]+=combos[p]>=3?20:10;
+    correctCount[p]++;
+
+    if(combos[p] > 0 && combos[p] % 3 === 0){
+      playerHP[p] = Math.min(maxPlayerHP, playerHP[p] + 20);
+      updatePlayerHP(p);
+    }
+
+    playBossHitSound();
+
+    const mon=document.getElementById(`monster-${p}`);
+    mon.classList.add('shake');
+    setTimeout(()=>mon.classList.remove('shake'),300);
+
+    showDamage(p,dmg);
+
+    if(bossHP[p]<=0){
+      defeatedBossCount[p]++;
+      playVictorySound();
+
+      const otherPlayer = p===0 ? 1 : 0;
+
+      if(playerState[otherPlayer]==='dead'){
+        playerState[p]='won';
+        showSideOverlay(p,'won');
+
+        document.querySelectorAll(`[data-player="${p}"] button`).forEach(b=>b.disabled=true);
+
+        checkEnd();
+        return;
+      }
+
+      bossHP[p]=maxBossHP;
+      document.getElementById(`monster-${p}`).textContent=randomBoss();
+      assignNewQuestion(p);
 
     }else{
-      currentAnswers[p].push(punct);
-      currentInput[p]++;
-      renderQuestion(p);
+      assignNewQuestion(p);
     }
+
+    updateBossHP(p);
+    document.getElementById(`p${p+1}-score`).textContent=scores[p]+'分';
+    checkEnd();
 
   }else{
     playWrongSound();
@@ -846,7 +910,8 @@ if(combos[p] > 0 && combos[p] % 3 === 0){
 
     combos[p]=0;
     document.getElementById(`p${p+1}-combo`).textContent =
-  "0 Combo";
+      "0 Combo";
+
     wrongCount[p]++;
     playerHP[p]-=15;
     updatePlayerHP(p);
@@ -855,17 +920,17 @@ if(combos[p] > 0 && combos[p] % 3 === 0){
     side.classList.add('shake');
     setTimeout(()=>side.classList.remove('shake'),300);
 
-   if(playerHP[p]<=0){
-  playerHP[p]=0;
-  playerState[p]='dead';
+    if(playerHP[p]<=0){
+      playerHP[p]=0;
+      playerState[p]='dead';
 
-  playGameOverSound();
-  showSideOverlay(p,'dead');
+      playGameOverSound();
+      showSideOverlay(p,'dead');
 
-  document.querySelectorAll(`[data-player="${p}"] button`).forEach(b=>b.disabled=true);
+      document.querySelectorAll(`[data-player="${p}"] button`).forEach(b=>b.disabled=true);
 
-  checkEnd();
-}
+      checkEnd();
+    }
   }
 }
 
@@ -897,6 +962,7 @@ function restartGame(){
     updatePlayerHP(i);
     updateBossHP(i);
     document.getElementById(`p${i+1}-score`).textContent='0分';
+   document.getElementById(`p${i+1}-combo`).textContent='0 Combo';
   }
 
   initQuestions();
