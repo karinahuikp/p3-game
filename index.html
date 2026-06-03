@@ -604,10 +604,10 @@ function animateBossEntrance(){
 const bossList=[
   "👹",
   "🧟‍♂️",
-  "🦹🏻‍♀️",
+  "🦖",
   "👺",
   "🧞‍♀️",
-  "🧌",
+  "🐲",
   "🧛🏼"
 ];
 
@@ -804,14 +804,28 @@ if(combos[p] > 0 && combos[p] % 3 === 0){
       showDamage(p,dmg);
 
       if(bossHP[p]<=0){
-        defeatedBossCount[p]++;
-        bossHP[p]=maxBossHP;
-        document.getElementById(`monster-${p}`).textContent=randomBoss();
-        playVictorySound();
-        assignNewQuestion(p);
-      }else{
-        assignNewQuestion(p);
-      }
+  defeatedBossCount[p]++;
+  playVictorySound();
+
+  const otherPlayer = p===0 ? 1 : 0;
+
+  if(playerState[otherPlayer]==='dead'){
+    playerState[p]='won';
+    showSideOverlay(p,'won');
+
+    document.querySelectorAll(`[data-player="${p}"] button`).forEach(b=>b.disabled=true);
+
+    checkEnd();
+    return;
+  }
+
+  bossHP[p]=maxBossHP;
+  document.getElementById(`monster-${p}`).textContent=randomBoss();
+  assignNewQuestion(p);
+
+}else{
+  assignNewQuestion(p);
+}
 
       updateBossHP(p);
       document.getElementById(`p${p+1}-score`).textContent=scores[p]+'分';
@@ -841,14 +855,17 @@ if(combos[p] > 0 && combos[p] % 3 === 0){
     side.classList.add('shake');
     setTimeout(()=>side.classList.remove('shake'),300);
 
-    if(playerHP[p]<=0){
-      playerHP[p]=0;
-      playerState[p]='dead';
-      playGameOverSound();
-      showSideOverlay(p,'dead');
-      document.querySelectorAll(`[data-player="${p}"] button`).forEach(b=>b.disabled=true);
-      checkEnd();
-    }
+   if(playerHP[p]<=0){
+  playerHP[p]=0;
+  playerState[p]='dead';
+
+  playGameOverSound();
+  showSideOverlay(p,'dead');
+
+  document.querySelectorAll(`[data-player="${p}"] button`).forEach(b=>b.disabled=true);
+
+  checkEnd();
+}
   }
 }
 
