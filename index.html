@@ -153,8 +153,9 @@
       overflow:hidden;
     }
 .btn-action{
-  min-width:64px;
-  min-height:60px;
+  min-width:54px;
+  min-height:42px;
+  font-size:0.95rem;
   font-size:1.1rem;
   border-radius:14px;
   font-weight:900;
@@ -169,9 +170,9 @@
 }
 
 .btn-punct{
-  min-width:52px;
-  min-height:48px;
-  font-size:1.7rem;
+  min-width:44px;
+  min-height:40px;
+  font-size:1.35rem;
 }
 
    
@@ -416,7 +417,7 @@
         </div>
       </div>
 
-      <div class="flex items-center justify-between px-3 py-1 bg-black/40 flex-shrink-0 gap-2">
+      <div class="flex items-center justify-between px-3 py-1 bg-black/40 flex-shrink-0 gap-1">
         <div class="flex items-center gap-1 flex-shrink-0">
           <span class="text-lg">🛡️</span>
           <span class="font-bold text-lg text-white">騎士</span>
@@ -443,8 +444,8 @@
 </div>
       </div>
 
-      <div class="flex gap-2 p-2 bg-black/50 flex-shrink-0">
-  <div class="flex flex-col gap-2">
+      <div class="flex gap-1 p-2 bg-black/50 flex-shrink-0">
+  <div class="flex flex-col gap-1">
     <button class="btn-action" onclick="clearAnswer(0)">取消</button>
     <button class="btn-action" onclick="submitAnswer(0)">確定</button>
   </div>
@@ -463,6 +464,8 @@
     <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'《')">《</button>
     <button class="btn-punct bg-red-600 text-white" onclick="answer(0,'》')">》</button>
   </div>
+</div>
+
 </div>
 
     <!-- 玩家2 -->
@@ -538,6 +541,7 @@
 </div>
 
   </div>
+</div>
 </main>
 
 <div id="result-overlay" class="result-overlay hidden">
