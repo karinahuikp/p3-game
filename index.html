@@ -595,7 +595,7 @@ function randomBoss(){
   return bossList[Math.floor(Math.random()*bossList.length)];
 }
 
-const maxBossHP=500,maxPlayerHP=100;
+const maxBossHP=500,maxPlayerHP=150;
 const scores=[0,0],combos=[0,0],playerHP=[100,100],bossHP=[500,500];
 const correctCount=[0,0],wrongCount=[0,0],defeatedBossCount=[0,0];
 const currentInput=[0,0];
@@ -769,7 +769,10 @@ function answer(p,punct){
       bossHP[p]-=dmg;
       scores[p]+=combos[p]>=3?20:10;
       correctCount[p]++;
-
+if(combos[p] > 0 && combos[p] % 3 === 0){
+  playerHP[p] = Math.min(maxPlayerHP, playerHP[p] + 20);
+  updatePlayerHP(p);
+}
       playBossHitSound();
 
       const mon=document.getElementById(`monster-${p}`);
